@@ -1,13 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
 
-import type { PlaywrightTestConfig } from "@playwright/test";
-import { Status } from "allure-js-commons";
-import * as os from "node:os";
-
-
-
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -30,48 +23,9 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  //reporter: 'html',
-  //reporter: [["line"], ["allure-playwright"]],
-  reporter: [
-    ["line"],
-    [
-      "allure-playwright",
-      {
-        resultsDir: "allure-results",
-        detail: true,
-        suiteTitle: true,
-        links: {
-          issue: {
-            nameTemplate: "Issue #%s",
-            urlTemplate: "https://issues.example.com/%s",
-          },
-          tms: {
-            nameTemplate: "TMS #%s",
-            urlTemplate: "https://tms.example.com/%s",
-          },
-          jira: {
-            urlTemplate: (v) => `https://jira.example.com/browse/${v}`,
-          },
-        },
-        categories: [
-          {
-            name: "foo",
-            messageRegex: "bar",
-            traceRegex: "baz",
-            matchedStatuses: [Status.FAILED, Status.BROKEN],
-          },
-        ],
-        environmentInfo: {
-          os_platform: os.platform(),
-          os_release: os.release(),
-          os_version: os.version(),
-          node_version: process.version,
-        },
-      },
-    ],
-  ],
-
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  reporter: [["line"], ["allure-playwright"],['html' , {outputFolder: 'test-results'}]],
+    
+    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
@@ -124,8 +78,5 @@ export default defineConfig({
   //   url: 'http://127.0.0.1:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-  
 });
-
-
 
